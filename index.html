@@ -25,10 +25,12 @@
 <script src="./assets/js/jquery.min.js"></script>
 <script src="./assets/js/parsley.min.js"></script>
 <script type="text/javascript" src="./assets/js/modernizr.custom.js"></script>
-<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script type="text/javascript">
    (function(){
-      emailjs.init("user_42Ttyp7yaaDdritmpQ2lP");
+      emailjs.init({
+        publicKey: "user_42Ttyp7yaaDdritmpQ2lP",
+      });
    })();
 </script>
 
