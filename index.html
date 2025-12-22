@@ -25,14 +25,7 @@
 <script src="./assets/js/jquery.min.js"></script>
 <script src="./assets/js/parsley.min.js"></script>
 <script type="text/javascript" src="./assets/js/modernizr.custom.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script type="text/javascript">
-   (function(){
-      emailjs.init({
-        publicKey: "user_42Ttyp7yaaDdritmpQ2lP",
-      });
-   })();
-</script>
+<!-- Web3Forms - No external library needed -->
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -47,34 +40,41 @@
 
 <script>
   function sendEmail(event) {
-
-
-    if($('#form-name').val() != "" && $('#form-email').val() != "" && $('#form-message').val() != "") {
-
-	   	event.preventDefault();
-
-      var sendParams = {        
-        email_sender: $('#form-email').val(),
-        email_subject: 'Appointment request by ' + $('#form-name').val() + " ( " + $('#form-email').val() + " ) ",
-        to_email: 'info@solanofamilydentistry.com',
-        email_body: $('#form-message').val(),
-        sender_name: $('#form-name').val()
+    event.preventDefault();
+    
+    var name = $('#form-name').val();
+    var email = $('#form-email').val();
+    var message = $('#form-message').val();
+    
+    if(name !== "" && email !== "" && message !== "") {
+      
+      var formData = {
+        access_key: "47a3e6b9-caaf-465b-8974-40fa37a8a4cf", // TODO: Replace with your Web3Forms access key
+        name: name,
+        email: email,
+        subject: 'Appointment request from ' + name,
+        message: message
       };
 
-      console.log("sending email. Email params:");
-      console.log(sendParams);
-
-      emailjs.send("gmail","template_IQuW4bLB",sendParams)
-      .then(function(response) {
-        $('#thanks-modal').modal()
-      }, function(err) {
-         console.log("FAILED. error=", err);
+      $.ajax({
+        url: 'https://api.web3forms.com/submit',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(formData),
+        success: function(response) {
+          if(response.success) {
+            $('#contact')[0].reset();
+            $('#thanks-modal').modal();
+          } else {
+            alert('Something went wrong. Please try again or call us directly.');
+          }
+        },
+        error: function(err) {
+          console.log('Error:', err);
+          alert('Something went wrong. Please try again or call us directly.');
+        }
       });
-    
-
-    } else {
     }
-
   }
 </script>
 <body data-spy="scroll" data-offset="0" data-target="#navbar-main">
